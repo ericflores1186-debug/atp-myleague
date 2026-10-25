@@ -1,0 +1,5 @@
+node_modules/
+tools/engine.cjs
+.build/
+.claude/
+.DS_Store

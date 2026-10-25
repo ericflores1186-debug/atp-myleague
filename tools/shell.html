@@ -1,0 +1,123 @@
+<title>ATP MyLEAGUE</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Barlow:wght@400;600&family=Chivo+Mono:wght@400;600&display=swap">
+<style>
+  /* Layout: a fixed left rail and one scrolling column; scoreboard-tight corners; the hero panel takes the court surface of the next event. */
+  :root {
+    color-scheme: dark;
+    --bg: 7 18 29;        /* night-session ground */
+    --panel: 12 28 43;
+    --raise: 20 42 62;
+    --line: 34 58 82;
+    --fg: 236 242 246;
+    --muted: 150 170 187;
+    --dim: 104 128 148;
+    --ball: 214 240 74;   /* optic yellow, the one accent */
+    --ink: 9 20 30;       /* text on the accent */
+    --hard: 57 135 229;   /* surfaces: validated as a colour-blind-safe set on --panel */
+    --clay: 217 89 38;
+    --grass: 31 166 120;
+    --up: 96 214 170;
+    --down: 244 118 130;
+    --font-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+    --font-body: "Barlow", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "Chivo Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  body {
+    background: rgb(var(--bg));
+    color: rgb(var(--fg));
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid rgb(var(--ball)); outline-offset: 2px; }
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: rgb(var(--muted));
+  }
+  .eyebrow.text-ball { color: rgb(var(--ball)); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .overflow-x-auto, .overflow-y-auto { scrollbar-width: thin; scrollbar-color: rgb(var(--line)) transparent; }
+  .topbar { position: sticky; top: env(safe-area-inset-top, 0px); }
+  .sheet { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  .court-art {
+    position: absolute;
+    top: 50%;
+    right: -48px;
+    width: min(54%, 540px);
+    transform: translateY(-50%) rotate(-8deg);
+    opacity: 0.9;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
+  }
+  @media (max-width: 767px) {
+    .court-art { width: 86%; right: -36%; opacity: 0.45; }
+  }
+
+  /* Bracket: equal-height columns; each slot draws its own connector into the 28px gutter. */
+  .bracket { display: grid; column-gap: 28px; row-gap: 8px; }
+  .bracket-col { display: flex; flex-direction: column; }
+  .bracket-slot { position: relative; display: flex; flex: 1; align-items: center; padding-block: 5px; }
+  .bracket-slot > * { width: 100%; }
+  .bracket-slot.has-in::before,
+  .bracket-slot.out-down::after,
+  .bracket-slot.out-up::after { content: ""; position: absolute; width: 14px; border: 0 solid rgb(var(--dim) / 0.7); }
+  .bracket-slot.has-in::before { right: 100%; top: 50%; border-top-width: 1px; }
+  .bracket-slot.out-down::after { left: 100%; top: 50%; height: 50%; border-top-width: 1px; border-right-width: 1px; }
+  .bracket-slot.out-up::after { left: 100%; bottom: 50%; height: 50%; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .champion { animation: rise 420ms ease-out both; }
+  @keyframes rise { from { opacity: 0.4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+  #root.booting { opacity: 0; }
+  .boot { padding: 48px 16px; font-family: var(--font-display); font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(var(--muted)); }
+</style>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  (function () {
+    var token = function (name) { return "rgb(var(--" + name + ") / <alpha-value>)"; };
+    var colors = {};
+    ["bg", "panel", "raise", "line", "fg", "muted", "dim", "ball", "ink", "hard", "clay", "grass", "up", "down"].forEach(function (name) { colors[name] = token(name); });
+    window.tailwind.config = {
+      theme: {
+        extend: {
+          colors: colors,
+          fontFamily: { display: ["var(--font-display)"], body: ["var(--font-body)"], mono: ["var(--font-mono)"] }
+        }
+      }
+    };
+  })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>window.react = window.React; /* the icon bundle looks for a lowercase global */</script>
+<script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.min.js"></script>
+<div id="root"><p class="boot">Loading ATP MyLEAGUE</p></div>
+<script>
+/*__BUNDLE__*/
+(function () {
+  var App = ATPMyLeagueApp.default;
+  var mount = function (data) {
+    var el = document.getElementById("root");
+    el.classList.add("booting");
+    ReactDOM.createRoot(el).render(React.createElement(App, { initialSave: data && data.game }));
+    var show = function () { el.classList.remove("booting"); };
+    requestAnimationFrame(function () { requestAnimationFrame(show); });
+    setTimeout(show, 400);
+  };
+  var hot = window.claude && window.claude.hot;
+  if (hot && hot.snapshot) hot.snapshot(function () { return { game: window.__atpMyLeague }; });
+  if (hot && hot.ready) hot.ready(mount); else mount((hot && hot.data) || {});
+})();
+</script>

@@ -1,0 +1,13 @@
+{
+  "name": "atp-myleague",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A multi-season tennis franchise simulator in one React component: a 150-player tour, point-by-point matches, storylines, interviews, betting and a GOAT debate.",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "test": "node tools/test.cjs 8"
+  },
+  "devDependencies": {
+    "esbuild": "0.27.0"
+  }
+}
